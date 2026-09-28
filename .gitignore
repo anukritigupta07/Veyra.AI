@@ -1,9 +1,11 @@
 node_modules/
 .env
-.env.*
+*.env
 !.env.example
 dist/
 build/
 coverage/
 .vscode/
 .DS_Store
+# Google Cloud credentials
+Backend/services/auth/serviceAccountKey.json
