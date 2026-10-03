@@ -2,11 +2,28 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../utils/firebase";
 
 function App() {
+
+  const handleLogin = async () => {
+    try {
+      const data = await api.post("/auth/login", token );
+      console.log(data);
+
+    }
+catch (error) {
+      console.error("Login Failed:", error);
+    }
+
+
+  }
+
   const googleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
+      const data = await signInWithPopup(auth, googleProvider);
+      const token = await data.user.getIdToken();
+      console.log("Token:", token);
+      await handleLogin(token);
 
-      console.log("Google Login Successful:", result.user);
+      console.log(data);
     } catch (error) {
       console.error("Google Login Failed:", error);
     }
