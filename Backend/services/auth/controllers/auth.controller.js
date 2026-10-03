@@ -1,4 +1,15 @@
+import  {getAuth} from "firebase-admin/auth";
+import  {app} from "../../config/firebase.js";
+
+
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body;}
-        catch (error) {}}
+        const {token} = req.body;
+        const decodedToken = await getAuth(app).verifyIdToken(token);
+        const user = await User.findOne({ uid: decodedToken.uid });
+       
+      ll
+    } catch (error) {
+        console.error("Error occurred while verifying token:", error);
+        return res.status(401).json({ error: "Invalid token" });
+    }
