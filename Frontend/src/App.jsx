@@ -1,29 +1,37 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../utils/firebase";
+import api from "../utils/axios.js";
 
 function App() {
-
-  const handleLogin = async () => {
+  const handleLogin = async (token) => {
     try {
-      const data = await api.post("/auth/login", token );
-      console.log(data);
+      const response = await api.post("/auth/login", {
+        token: token,
+      });
 
+      console.log("Backend response:", response.data);
+    } catch (error) {
+      console.error(
+        "Login Failed:",
+        error.response?.data || error.message
+      );
     }
-catch (error) {
-      console.error("Login Failed:", error);
-    }
-
-
-  }
+  };
 
   const googleLogin = async () => {
     try {
+      // Sign in with Google
       const data = await signInWithPopup(auth, googleProvider);
+
+      // Get Firebase ID token
       const token = await data.user.getIdToken();
+
       console.log("Token:", token);
+
+      // Send token to backend
       await handleLogin(token);
 
-      console.log(data);
+      console.log("Google User:", data.user);
     } catch (error) {
       console.error("Google Login Failed:", error);
     }
