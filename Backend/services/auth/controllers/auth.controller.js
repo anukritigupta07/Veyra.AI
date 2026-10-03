@@ -1,5 +1,5 @@
 import  {getAuth} from "firebase-admin/auth";
-import  {app} from "../../config/firebase.js";
+import  {app} from "../config/firebase.js";
 
 
 export const login = async (req, res) => {
@@ -13,9 +13,21 @@ export const login = async (req, res) => {
             firebaseUid: decoded.uid,
             name: decoded.name,
             email: decoded.email,
-    } )}}
+    } )}
+
+    const sessionId= crypto.randomUID();
+
+
+    res.cookie("session", sessionId, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        maxAge: 7*24*60*60*1000, // 1 day
+    });
+    return res.status(200).json({ message: "Login successful", user, sessionId });
+}
     catch (error) {
-        console.error("Error occurred while verifying token:", error);
-        return res.status(401).json({ error: "Invalid token" });
+        return res.status(500).json({ message: "Login failed", error: error.message });
     }
 }
+

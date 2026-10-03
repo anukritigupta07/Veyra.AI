@@ -6,4 +6,4 @@ const app = initializeApp({
   credential:cert(serviceAccount)
 });
 
-
+export {app};
