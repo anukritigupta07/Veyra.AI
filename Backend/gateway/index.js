@@ -15,7 +15,6 @@ console.log("AUTH_SERVICE:", process.env.AUTH_SERVICE);
 app.use(
     cors({
         origin: process.env.FRONTEND_URL,
-        methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     })
 );

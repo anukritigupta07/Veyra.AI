@@ -1,12 +1,17 @@
-import { signInWithPopup } from "firebase/auth";
+
+import {
+  signInWithRedirect,
+  getRedirectResult,
+} from "firebase/auth";
 import { auth, googleProvider } from "../utils/firebase";
+import { useEffect } from "react";
 import api from "../utils/axios.js";
 
 function App() {
   const handleLogin = async (token) => {
     try {
       const response = await api.post("/auth/login", {
-        token: token,
+        token,
       });
 
       console.log("Backend response:", response.data);
@@ -20,22 +25,41 @@ function App() {
 
   const googleLogin = async () => {
     try {
-      // Sign in with Google
-      const data = await signInWithPopup(auth, googleProvider);
-
-      // Get Firebase ID token
-      const token = await data.user.getIdToken();
-
-      console.log("Token:", token);
-
-      // Send token to backend
-      await handleLogin(token);
-
-      console.log("Google User:", data.user);
+      await signInWithRedirect(auth, googleProvider);
     } catch (error) {
-      console.error("Google Login Failed:", error);
+      console.error(
+        "Google Login Failed:",
+        error.code,
+        error.message
+      );
     }
   };
+
+  useEffect(() => {
+    const checkGoogleLogin = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+
+        if (result) {
+          console.log("Google User:", result.user);
+
+          const token = await result.user.getIdToken();
+
+          console.log("Firebase ID token received");
+
+          await handleLogin(token);
+        }
+      } catch (error) {
+        console.error(
+          "Redirect Login Failed:",
+          error.code,
+          error.message
+        );
+      }
+    };
+
+    checkGoogleLogin();
+  }, []);
 
   return (
     <div className="w-full h-screen bg-black flex items-center justify-center">
