@@ -26,6 +26,7 @@ export const login = async (req, res) => {
 
     // Create session ID
     const sessionId = crypto.randomUUID();
+    
 
     // Store session cookie
     res.cookie("session", sessionId, {
