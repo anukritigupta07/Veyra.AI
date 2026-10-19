@@ -294,8 +294,7 @@ Make sure you have installed:
 * npm
 * MongoDB
 * Git
-* Docker *(optional)*
-
+* Docker 
 You will also need credentials for the AI provider used by the project.
 
 ### Clone the Repository
@@ -315,10 +314,11 @@ npm install
 If the project uses separate frontend and backend packages:
 
 ```bash
-cd client
+cd frontend
 npm install
 
-cd ../server
+
+cd ../backend
 npm install
 ```
 
@@ -327,7 +327,7 @@ npm install
 Create a `.env` file:
 
 ```env
-PORT=5000
+PORT=7000
 MONGODB_URI=your_mongodb_connection_string
 
 AI_API_KEY=your_api_key
