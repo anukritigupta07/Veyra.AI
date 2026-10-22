@@ -328,7 +328,7 @@ Create a `.env` file:
 
 ```env
 PORT=7000
-MONGODB_URI=your_mongodb_connection_string
+MONGODB_URI="mongodb+srv://guptaanukriti093_db_user:123passwrd@cluster0.g6urzzy.mongodb.net/auth?retryWrites=true&w=majority"
 
 AI_API_KEY=your_api_key
 
